@@ -3,10 +3,11 @@ import os
 import json
 import time
 from image_generation import generate_and_save_images
+from config import PROJECT_ABSOLUTE_PATH
 
 
 def configure_checkpoints(generator_optimizer, discriminator_optimizer, generator, discriminator):
-    checkpoint_dir = './checkpoints'
+    checkpoint_dir = os.path.join(PROJECT_ABSOLUTE_PATH, 'checkpoints')
     checkpoint = tf.train.Checkpoint(step=tf.Variable(1),
                                      generator_optimizer=generator_optimizer,
                                      discriminator_optimizer=discriminator_optimizer,
@@ -91,5 +92,5 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
     # Generate a final image after the training is completed
     # display.clear_output(wait=True)
     generate_and_save_images(generator, epochs, seed)
-    save_generator_path = 'saved_generator/generator'
+    save_generator_path = os.path.join(PROJECT_ABSOLUTE_PATH, 'saved_generator/generator')
     generator.save(save_generator_path)

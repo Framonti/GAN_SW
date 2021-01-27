@@ -7,6 +7,7 @@ import json
 from GAN_training import train
 from image_generation import create_gif
 from keras.datasets.cifar10 import load_data
+from config import PROJECT_ABSOLUTE_PATH
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -23,7 +24,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 train_images = train_images.astype('float32')
 train_images = (train_images - 127.5) / 127.5 # Normalize from [0,255] to [-1,1]
 
-with open('params.json', 'r') as param_file:
+with open(os.path.join(PROJECT_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
     params = json.load(param_file)
 
 BUFFER_SIZE = params['BUFFER_SIZE']

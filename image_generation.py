@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import PIL
 import glob
 import imageio
+import os
+from config import PROJECT_ABSOLUTE_PATH
 
 
 # todo change a lot this one
@@ -36,7 +38,7 @@ def generate_and_save_images(g_model, epoch, test_input):
         # plot raw pixel data
         plt.imshow(predictions[i])
     # save plot to file
-    plt.savefig(f'images_generated/image_epoch_{epoch}.png')
+    plt.savefig(os.path.join(PROJECT_ABSOLUTE_PATH, f'images_generated/image_epoch_{epoch}.png'))
     plt.show()
     plt.close()
 
