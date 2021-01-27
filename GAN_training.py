@@ -76,9 +76,7 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
             train_step(image_batch, batch_size, noise_dimension, generator, discriminator, generator_loss,
                        discriminator_loss, generator_optimizer, discriminator_optimizer)
 
-        # 2 - Produce images for the GIF as we go
-        # todo maybe remove
-        # display.clear_output(wait=True)
+        # 2 - Produce intermediate images
         generate_and_save_images(generator, epoch + 1, seed)
 
         # Save the model every 5 epochs as a checkpoint
@@ -93,3 +91,5 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
     # Generate a final image after the training is completed
     # display.clear_output(wait=True)
     generate_and_save_images(generator, epochs, seed)
+    save_generator_path = 'saved_generator/generator'
+    generator.save(save_generator_path)

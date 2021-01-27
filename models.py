@@ -5,54 +5,59 @@ from tensorflow.keras.layers import Dense, BatchNormalization, LeakyReLU, Reshap
 def build_generator(output_width=28, output_height=28):  # todo remove default value
     """
     Accepts 1D arrays and outputs 28x28 pixels images. todo change the output
+    # todo check if we want to reduce even more the starting values (probably yes)
     :return:
     """
     model = tf.keras.Sequential()
-    model.add(Dense(7*7*256, use_bias=False, input_shape=(100,)))   #
-    # model.add(Dense((output_width/4)*(output_height/4)*256, use_bias=False, input_shape=(100,)))
+    # model.add(Dense(7*7*256, use_bias=False, input_shape=(100,)))   #
+    model.add(Dense((output_width//8)*(output_height//8)*256, input_shape=(100,)))
     model.add(BatchNormalization())
-    model.add(LeakyReLU())
+    model.add(LeakyReLU()) # todo alpha=0.2
 
-    model.add(Reshape((7, 7, 256)))      # reshape 1D into 2D; 256 = Gray scale?
-    # model.add(Reshape(((output_width/4), (output_height/4), 256)))
-    assert model.output_shape == (None, 7, 7, 256)
+    # model.add(Reshape((7, 7, 256)))      # reshape 1D into 2D;
+    model.add(Reshape(((output_width//8), (output_height//8), 256)))
+    # assert model.output_shape == (None, 4, 4, 256)
 
     # Conv2DTranspose:  increase the size of a smaller array
-    model.add(Conv2DTranspose(128, (5, 5), strides=(1, 1), padding='same', use_bias=False)) # todo ???
-    assert model.output_shape == (None, 7, 7, 128)
-    model.add(BatchNormalization())
-    model.add(LeakyReLU())
+    model.add(Conv2DTranspose(128, (4, 4), strides=(2, 2), padding='same'))
+    # assert model.output_shape == (None, 8, 8, 128)
+    model.add(LeakyReLU(alpha=0.2))
 
-    model.add(Conv2DTranspose(64, (5, 5), strides=(2, 2), padding='same', use_bias=False))
-    assert model.output_shape == (None, 14, 14, 64)
-    model.add(BatchNormalization())
-    model.add(LeakyReLU())
+    model.add(Conv2DTranspose(128, (4, 4), strides=(2, 2), padding='same'))
+   # assert model.output_shape == (None, 16, 16, 128)
+    model.add(LeakyReLU(alpha=0.2))
 
-    model.add(Conv2DTranspose(1, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh'))
-    assert model.output_shape == (None, 28, 28, 1)
+    model.add(Conv2DTranspose(128, (4, 4), strides=(2, 2), padding='same'))  # todo 128 instead of 64?
+    # assert model.output_shape == (None, 32, 32, 128)
+    model.add(LeakyReLU(alpha=0.2))
+
+    model.add(Conv2D(3, (3, 3), padding='same', activation='tanh'))
+   #  assert model.output_shape == (None, 28, 28, 1)
 
     return model
 
 
-def build_discriminator():
+def build_discriminator(input_shape=(32, 32, 3)):   # todo change in 1280x720 probably
     model = tf.keras.Sequential()
 
-    model.add(Conv2D(64, (5, 5), strides=(2, 2), padding='same', input_shape=[28, 28, 1]))
-    model.add(LeakyReLU())
-    model.add(Dropout(0.3))
+    model.add(Conv2D(64, (3, 3), padding='same', input_shape=input_shape))
+    model.add(LeakyReLU(alpha=0.2))
 
-    model.add(Conv2D(128, (5, 5), strides=(2, 2), padding='same'))
-    model.add(LeakyReLU())
-    model.add(Dropout(0.3))
+    model.add(Conv2D(128, (3, 3), strides=(2, 2), padding='same'))
+    model.add(LeakyReLU(alpha=0.2))
+
+    model.add(Conv2D(256, (3, 3), strides=(2, 2), padding='same'))
+    model.add(LeakyReLU(alpha=0.2))
 
     model.add(Flatten())
-    model.add(Dense(1))
+    model.add(Dropout(0.4))
+    model.add(Dense(1, activation='sigmoid'))
 
     return model
 
 
-generator_optimizer = tf.keras.optimizers.Adam(1e-4)
-discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
+generator_optimizer = tf.keras.optimizers.Adam(lr=2e-4, beta_1=0.5)
+discriminator_optimizer = tf.keras.optimizers.Adam(lr=2e-4, beta_1=0.5)
 
 
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
