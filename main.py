@@ -1,15 +1,12 @@
 from models import *
 import tensorflow as tf
-import matplotlib.pyplot as plt
-import keras
 import os
 import json
 from GAN_training import train
-from image_generation import create_gif
 from keras.datasets.cifar10 import load_data
 from config import PROJECT_ABSOLUTE_PATH
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'   # change or not depending on your machine
 
 (train_images, _), (_, _) = load_data()
 

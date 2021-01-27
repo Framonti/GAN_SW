@@ -3,5 +3,8 @@
   "BUFFER_SIZE": 60000,
   "EPOCHS": 10,
 
-  "noise_dimension": 100
+  "noise_dimension": 100,
+
+  "image_width": 900,
+  "image_height": 600
 }
