@@ -79,11 +79,11 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
                        discriminator_loss, generator_optimizer, discriminator_optimizer)
 
         # 2 - Produce intermediate images
-        generate_and_save_images(generator, epoch + 1, seed)
+        generate_and_save_images(generator, seed, epochs+1, training=True)
 
         # Save the model every 5 epochs as a checkpoint
         checkpoint.step.assign_add(1)
-        if int(checkpoint.step) % 2 == 0:
+        if int(checkpoint.step) % 5 == 0:
             save_path = manager.save()
             print(f"Saved checkpoint for step {int(checkpoint.step)}: {save_path}")
 
@@ -92,6 +92,6 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
 
     # Generate a final image after the training is completed
     # display.clear_output(wait=True)
-    generate_and_save_images(generator, epochs, seed)
-    save_generator_path = os.path.join(PROJECT_ABSOLUTE_PATH, 'saved_generator/generator')
+    generate_and_save_images(generator, seed, epochs, training=True) # name
+    save_generator_path = os.path.join(PROJECT_ABSOLUTE_PATH, 'saved_generator')
     generator.save(save_generator_path)

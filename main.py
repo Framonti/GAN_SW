@@ -4,10 +4,12 @@ import sys
 
 import tensorflow as tf
 from keras.datasets.cifar10 import load_data
+from keras.models import load_model
 
 from models import *
 from GAN_training import train
 from config import PROJECT_ABSOLUTE_PATH
+from image_generation import generate_and_save_images
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # change or not depending on your machine
 
@@ -41,7 +43,18 @@ def gan_train():
 # create_gif('gif/test.gif')
 
 def generate(n):
-    pass
+    load_path = os.path.join(PROJECT_ABSOLUTE_PATH, 'saved_generator')
+    generator = load_model(load_path)
+
+    with open(os.path.join(PROJECT_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
+        params = json.load(param_file)
+
+    noise_dimension = params['noise_dimension']
+    num_examples_to_generate = params['num_examples_to_generate_train']
+
+    for i in range(n):
+        seed = tf.random.normal([num_examples_to_generate, noise_dimension])
+        generate_and_save_images(generator, seed, i, training=False)
 
 
 if __name__ == '__main__':
