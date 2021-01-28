@@ -5,6 +5,9 @@
 
   "noise_dimension": 100,
 
-  "image_width": 900,
-  "image_height": 600
+  "num_examples_to_generate_train": 1,
+  "image_width": 1280,
+  "image_width_test": 32,
+  "image_height": 800,
+  "image_height_test": 32
 }

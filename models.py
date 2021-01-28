@@ -2,17 +2,16 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense, BatchNormalization, LeakyReLU, Reshape, Conv2DTranspose, Conv2D, Dropout, Flatten
 
 
-def build_generator(output_width=28, output_height=28):  # todo remove default value
+def build_generator(output_width, output_height):
     """
-    Accepts 1D arrays and outputs 28x28 pixels images. todo change the output
-    # todo check if we want to reduce even more the starting values (probably yes)
+    Accepts 1D arrays and outputs 1260x800 pixels images. # todo not yet
     :return:
     """
     model = tf.keras.Sequential()
     # model.add(Dense(7*7*256, use_bias=False, input_shape=(100,)))   #
     model.add(Dense((output_width//8)*(output_height//8)*256, input_shape=(100,)))
     model.add(BatchNormalization())
-    model.add(LeakyReLU()) # todo alpha=0.2
+    model.add(LeakyReLU(alpha=0.2))
 
     # model.add(Reshape((7, 7, 256)))      # reshape 1D into 2D;
     model.add(Reshape(((output_width//8), (output_height//8), 256)))
@@ -32,12 +31,12 @@ def build_generator(output_width=28, output_height=28):  # todo remove default v
     model.add(LeakyReLU(alpha=0.2))
 
     model.add(Conv2D(3, (3, 3), padding='same', activation='tanh'))
-   #  assert model.output_shape == (None, 28, 28, 1)
+   #  assert model.output_shape == (None, 32, 32, 3)
 
     return model
 
 
-def build_discriminator(input_shape=(32, 32, 3)):   # todo change in 1280x720 probably
+def build_discriminator(input_shape=(32, 32, 3)):   # todo change in 900x600 probably
     model = tf.keras.Sequential()
 
     model.add(Conv2D(64, (3, 3), padding='same', input_shape=input_shape))

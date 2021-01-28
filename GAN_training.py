@@ -1,7 +1,8 @@
-import tensorflow as tf
 import os
-import json
 import time
+
+import tensorflow as tf
+
 from image_generation import generate_and_save_images
 from config import PROJECT_ABSOLUTE_PATH
 
