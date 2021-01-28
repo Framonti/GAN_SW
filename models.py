@@ -2,12 +2,13 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense, BatchNormalization, LeakyReLU, Reshape, Conv2DTranspose, Conv2D, Dropout, Flatten
 
 
-def build_generator(output_width, output_height):
+def build_generator(output_width, output_height, batch_size):
     """
     Accepts 1D arrays and outputs 1260x800 pixels images. # todo not yet
     :return:
     """
     model = tf.keras.Sequential()
+    model.add(tf.keras.layers.InputLayer((100,), batch_size=batch_size))
     # model.add(Dense(7*7*256, use_bias=False, input_shape=(100,)))   #
     model.add(Dense((output_width//8)*(output_height//8)*256, input_shape=(100,)))
     model.add(BatchNormalization())
@@ -36,7 +37,7 @@ def build_generator(output_width, output_height):
     return model
 
 
-def build_discriminator(input_shape=(32, 32, 3)):   # todo change in 900x600 probably
+def build_discriminator(input_shape=(1280, 800, 3)):
     model = tf.keras.Sequential()
 
     model.add(Conv2D(64, (3, 3), padding='same', input_shape=input_shape))

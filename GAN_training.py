@@ -79,7 +79,7 @@ def train(dataset, seed, epochs, batch_size, noise_dimension, generator, discrim
                        discriminator_loss, generator_optimizer, discriminator_optimizer)
 
         # 2 - Produce intermediate images
-        generate_and_save_images(generator, seed, epochs+1, training=True)
+        generate_and_save_images(generator, seed, epoch+1, training=True)
 
         # Save the model every 5 epochs as a checkpoint
         checkpoint.step.assign_add(1)
