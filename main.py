@@ -3,26 +3,23 @@ import json
 import sys
 
 import tensorflow as tf
-from keras.datasets.cifar10 import load_data
 from keras.models import load_model
 
 from models import *
 from GAN_training import train
-from config import PROJECT_ABSOLUTE_PATH
+from config import CONFIG_ABSOLUTE_PATH, PROJECT_ABSOLUTE_PATH
 from image_generation import generate_and_save_images
-from load_data import load_data_test
+from load_data import load_data
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # change or not depending on your machine
 
 
 def gan_train():
-    (train_images, _), (_, _) = load_data()  # todo change example dataset into real dataset
-    # print(train_images)
-    train_images = load_data_test()
+    train_images = load_data()
     train_images = train_images.astype('float32')
     train_images = (train_images - 127.5) / 127.5  # Normalize from [0,255] to [-1,1]
 
-    with open(os.path.join(PROJECT_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
+    with open(os.path.join(CONFIG_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
         params = json.load(param_file)
 
     BUFFER_SIZE = params['BUFFER_SIZE']
@@ -50,7 +47,7 @@ def generate(n):
     load_path = os.path.join(PROJECT_ABSOLUTE_PATH, 'saved_generator')
     generator = load_model(load_path, compile=False)
 
-    with open(os.path.join(PROJECT_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
+    with open(os.path.join(CONFIG_ABSOLUTE_PATH, 'params.json'), 'r') as param_file:
         params = json.load(param_file)
 
     noise_dimension = params['noise_dimension']

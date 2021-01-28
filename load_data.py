@@ -2,11 +2,11 @@ import os
 import numpy as np
 
 from keras.preprocessing.image import load_img, img_to_array
-from config import PROJECT_ABSOLUTE_PATH
+from config import YT_DOWNLOAD_ABSOLUTE_PATH
 
 
-def load_data_test():
-    dir_name = os.path.join(PROJECT_ABSOLUTE_PATH, 'yt_thumbnails')
+def load_data():
+    dir_name = os.path.join(YT_DOWNLOAD_ABSOLUTE_PATH, 'yt_thumbnails')
     num_train_samples = len(os.listdir(dir_name)) - 1  # -1 due to hidden file ".directory"
 
     x_train = []
