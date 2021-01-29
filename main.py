@@ -35,7 +35,7 @@ def gan_train():
     train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
 
     generator = build_generator(image_width, image_height, BATCH_SIZE)
-    discriminator = build_discriminator()
+    discriminator = build_discriminator((image_height, image_width, 3))
 
     train(train_dataset, seed, EPOCHS, BATCH_SIZE, noise_dimension, generator, discriminator, generator_loss,
           discriminator_loss, generator_optimizer, discriminator_optimizer)

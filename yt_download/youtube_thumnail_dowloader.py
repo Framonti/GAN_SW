@@ -39,7 +39,7 @@ def download_image(ID, url, title=None):
 
     # resizing the image
     # og size: 1280x720
-    with open(CONFIG_ABSOLUTE_PATH, 'r') as params_file:
+    with open(os.path.join(CONFIG_ABSOLUTE_PATH, 'params.json'), 'r') as params_file:
         params = json.load(params_file)
     resize_width = params['image_width']
     resize_height = params['image_height']
