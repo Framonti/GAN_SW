@@ -1,7 +1,7 @@
 {
-  "BATCH_SIZE" : 20,
-  "BUFFER_SIZE": 80,
-  "EPOCHS": 10,
+  "BATCH_SIZE" : 128,
+  "BUFFER_SIZE": 2800,
+  "EPOCHS": 200,
 
   "noise_dimension": 100,
 
