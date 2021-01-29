@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from numpy.random import randint
 
 from keras.preprocessing.image import load_img, img_to_array
 from config import YT_DOWNLOAD_ABSOLUTE_PATH
@@ -19,4 +20,10 @@ def load_data():
 
     x_train = np.array(x_train)
     return x_train
+
+
+def preprocess_data(dataset):
+    train_images = dataset.astype('float32')
+    train_images = (train_images - 127.5) / 127.5  # Normalize from [0,255] to [-1,1]
+    return train_images
 

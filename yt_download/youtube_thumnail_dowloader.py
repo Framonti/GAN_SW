@@ -12,9 +12,22 @@ from bs4 import BeautifulSoup
 from config import YT_DOWNLOAD_ABSOLUTE_PATH, CONFIG_ABSOLUTE_PATH
 
 
+def resize_image(save_path):
+    img = Image.open(save_path)
+
+    # og size: 1280x720
+    with open(os.path.join(CONFIG_ABSOLUTE_PATH, 'params.json'), 'r') as params_file:
+        params = json.load(params_file)
+    resize_width = params['image_width']
+    resize_height = params['image_height']
+    img = img.resize((resize_width, resize_height))
+
+    img.save(save_path)
+
+
 def download_image(ID, url, title=None):
     # insert ID in url of image
-    img_url = 'https://img.youtube.com/vi/' + ID + '/maxresdefault.jpg'
+    img_url = 'https://img.youtube.com/vi/' + ID + '/0.jpg'  # ?? maxresdefault
 
     # Naming of images
     if title is None:
@@ -35,17 +48,7 @@ def download_image(ID, url, title=None):
                 raw_img.write(chunk)
     print("Download Successful")
 
-    img = Image.open(save_path)
-
-    # resizing the image
-    # og size: 1280x720
-    with open(os.path.join(CONFIG_ABSOLUTE_PATH, 'params.json'), 'r') as params_file:
-        params = json.load(params_file)
-    resize_width = params['image_width']
-    resize_height = params['image_height']
-    img = img.resize((resize_width, resize_height))
-
-    img.save(save_path)
+    resize_image(save_path)
 
 
 def main():
