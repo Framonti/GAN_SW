@@ -1,14 +1,9 @@
 {
-  "BATCH_SIZE" : 64,
   "n_batch": 32,
-  "BUFFER_SIZE": 1700,
-  "EPOCHS": 10,
-  "n_epochs": 10,
+  "n_epochs": 200,
 
-  "noise_dimension": 100,
   "latent_dimension": 100,
 
-  "num_examples_to_generate_train": 1,
   "image_width": 128,
   "image_height": 80
 }
